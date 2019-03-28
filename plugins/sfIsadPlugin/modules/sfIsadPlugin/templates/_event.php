@@ -10,7 +10,7 @@
         <th style="width: 25%">
           <?php echo __('Type') ?>
         </th><th style="width: 30%">
-          <?php echo __('Date') ?>
+          <?php echo __('Date - dc.date (Trove harvested)') ?>
         </th><th style="width: 20%">
           <?php echo __('Start') ?>
         </th><th style="width: 20%">

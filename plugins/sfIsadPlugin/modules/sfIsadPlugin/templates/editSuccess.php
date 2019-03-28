@@ -36,7 +36,7 @@
 
         <legend><?php echo __('Identity area') ?></legend>
 
-        <?php echo render_show(__('Reference code'), $isad->referenceCode) ?>
+        <?php echo render_show(__('Reference code - dc.identifer (Trove harvested)'), $isad->referenceCode) ?>
 
         <?php echo $form->identifier
           ->help(__('Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked repository record to form a full reference code. (ISAD 3.1.1)'))
@@ -48,20 +48,20 @@
 
         <?php echo render_field($form->title
           ->help(__('Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions. (ISAD 3.1.2)'))
-          ->label(__('Title').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
+          ->label(__('Title - dc.title (Trove harvested)').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
 
         <?php echo get_partial('event', $sf_data->getRaw('eventComponent')->getVarHolder()->getAll() + array('help' => __('"Identify and record the date(s) of the unit of description. Identify the type of date given. Record as a single date or a range of dates as appropriate.” (ISAD 3.1.3). The Date display field can be used to enter free-text date information, including typographical marks to express approximation, uncertainty, or qualification. Use the start and end fields to make the dates searchable. Do not use any qualifiers or typographical symbols to express uncertainty. Acceptable date formats: YYYYMMDD, YYYY-MM-DD, YYYY-MM, YYYY.'))) ?>
 
         <?php echo $form->levelOfDescription
           ->help(__('Record the level of this unit of description. (ISAD 3.1.4)'))
-          ->label(__('Level of description').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+          ->label(__('Level of description - dc.type (Trove harvested)').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
           ->renderRow() ?>
 
         <?php echo get_partial('informationobject/childLevels', array('help' => __('Identifier: Provide a specific local reference code, control number, or other unique identifier. Level of description: Record the level of this unit of description. Title: Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.'))) ?>
 
         <?php echo render_field($form->extentAndMedium
           ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Separate multiple extents with a linebreak. (ISAD 3.1.5)'))
-          ->label(__('Extent and medium').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource, array('class' => 'resizable')) ?>
+          ->label(__('Extent and medium - dc.format (Trove harvested)').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource, array('class' => 'resizable')) ?>
 
       </fieldset> <!-- /#identityArea -->
 
@@ -71,7 +71,7 @@
 
         <div class="form-item">
           <?php echo $form->creators
-            ->label(__('Name of creator(s)').' <span class="form-required" title="'.__('This archival description, or one of its higher levels, requires at least one creator.').'">*</span>')
+            ->label(__('Name of creator(s)- dc.creator (Trove harvested)').' <span class="form-required" title="'.__('This archival description, or one of its higher levels, requires at least one creator.').'">*</span>')
             ->renderLabel() ?>
           <?php echo $form->creators->render(array('class' => 'form-autocomplete')) ?>
           <?php echo $form->creators
@@ -82,7 +82,7 @@
         </div>
 
         <div class="form-item">
-          <?php echo $form->repository->renderLabel() ?>
+          <?php echo "Repository - dc.relation (Trove harvested)" ?>
           <?php echo $form->repository->render(array('class' => 'form-autocomplete')) ?>
           <input class="add" type="hidden" data-link-existing="true" value="<?php echo url_for(array('module' => 'repository', 'action' => 'add')) ?> #authorizedFormOfName"/>
           <input class="list" type="hidden" value="<?php echo url_for($sf_data->getRaw('repoAcParams')) ?>"/>
@@ -105,7 +105,8 @@
         <legend><?php echo __('Content and structure area') ?></legend>
 
         <?php echo render_field($form->scopeAndContent
-          ->help(__('Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description. (ISAD 3.3.1)')), $resource, array('class' => 'resizable')) ?>
+          ->help(__('Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description. (ISAD 3.3.1)'))
+          ->label(__('Scope and content - dc.description (Trove harvested)')), $resource, array('class' => 'resizable')) ?>
 
         <?php echo render_field($form->appraisal
           ->help(__('Record appraisal, destruction and scheduling actions taken on or planned for the unit of description, especially if they may affect the interpretation of the material. (ISAD 3.3.2)'))
@@ -126,7 +127,7 @@
 
         <?php echo render_field($form->accessConditions
           ->help(__('Specify the law or legal status, contract, regulation or policy that affects access to the unit of description. Indicate the extent of the period of closure and the date at which the material will open when appropriate. (ISAD 3.4.1)'))
-          ->label(__('Conditions governing access')), $resource, array('class' => 'resizable')) ?>
+          ->label(__('Conditions governing access - dc.rights (Trove harvested)')), $resource, array('class' => 'resizable')) ?>
 
         <?php echo render_field($form->reproductionConditions
           ->help(__('Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary. (ISAD 3.4.2)'))
@@ -134,7 +135,7 @@
 
         <?php echo $form->language
           ->help(__('Record the language(s) of the materials comprising the unit of description. (ISAD 3.4.3)'))
-          ->label(__('Language of material'))
+          ->label(__('Language of material - dc.language (Trove harvested)'))
           ->renderRow(array('class' => 'form-autocomplete')) ?>
 
         <?php echo $form->script
@@ -161,7 +162,7 @@
 
         <?php echo render_field($form->locationOfOriginals
           ->help(__('If the original of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. If the originals no longer exist, or their location is unknown, give that information. (ISAD 3.5.1)'))
-          ->label(__('Existence and location of originals')), $resource, array('class' => 'resizable')) ?>
+          ->label(__('Existence and location of originals - dc.source (Trove harvested)')), $resource, array('class' => 'resizable')) ?>
 
         <?php echo render_field($form->locationOfCopies
           ->help(__('If the copy of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. (ISAD 3.5.2)'))
@@ -203,7 +204,7 @@
 
         <div class="form-item">
           <?php echo $form->subjectAccessPoints
-            ->label(__('Subject access points'))
+            ->label(__('Subject access points - dc.subject (Trove harvested)'))
             ->renderLabel() ?>
           <?php echo $form->subjectAccessPoints->render(array('class' => 'form-autocomplete')) ?>
           <?php if (QubitAcl::check(QubitTaxonomy::getById(QubitTaxonomy::SUBJECT_ID), 'createTerm')): ?>
@@ -214,7 +215,7 @@
 
         <div class="form-item">
           <?php echo $form->placeAccessPoints
-            ->label(__('Place access points'))
+            ->label(__('Place access points - dc.coverage (Trove harvested)'))
             ->renderLabel() ?>
           <?php echo $form->placeAccessPoints->render(array('class' => 'form-autocomplete')) ?>
           <?php if (QubitAcl::check(QubitTaxonomy::getById(QubitTaxonomy::PLACE_ID), 'createTerm')): ?>
@@ -236,7 +237,7 @@
 
         <div class="form-item">
           <?php echo $form->nameAccessPoints
-            ->label(__('Name access points (subjects)'))
+            ->label(__('Name access points (subjects) - dc.subject (Trove harvested)'))
             ->renderLabel() ?>
           <?php echo $form->nameAccessPoints->render(array('class' => 'form-autocomplete')) ?>
           <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>

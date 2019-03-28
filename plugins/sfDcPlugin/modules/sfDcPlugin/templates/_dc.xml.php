@@ -6,7 +6,7 @@
     http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
 
   <?php if (!empty($resource->title)): ?>
-    <dc:title><?php echo esc_specialchars(strval($resource->title)) ?></dc:title>
+    <dc:title><?php echo esc_specialchars(render_title($resource->getCollectionRoot())) ?> / <?php echo esc_specialchars(strval($resource->title)) ?></dc:title>
   <?php endif; ?>
 
   <?php foreach ($resource->getCreators() as $item): ?>
@@ -41,10 +41,26 @@
     <dc:format><?php echo esc_specialchars(strval($item)) ?></dc:format>
   <?php endforeach; ?>
 
-  <dc:identifier><?php echo esc_specialchars(sfConfig::get('app_siteBaseUrl') .'/'.$resource->slug) ?></dc:identifier>
-
-  <?php if (!empty($resource->identifier)): ?>
-    <dc:identifier><?php echo esc_specialchars(strval($resource->identifier)) ?></dc:identifier>
+  <?php if (count($resource->digitalObjects)): ?>
+    <?php foreach ($resource->digitalObjects as $digitalObject): ?>
+      <?php if ($digitalObject->usageId == QubitTerm::OFFLINE_ID): ?>
+        <dc:identifier linktype="notonline"><?php echo esc_specialchars($resource['referenceCode']) ?></dc:identifier>
+        <dc:identifier linktype="notonline"><?php echo esc_specialchars(sfConfig::get('app_siteBaseUrl') .'/'.$resource->slug) ?></dc:identifier>
+      <?php endif; ?>
+      <?php if ($digitalObject->usageId == QubitTerm::MASTER_ID && QubitAcl::check($resource, 'read')): ?>
+        <?php $digitalObjectUrl = (string)QubitSetting::getByName('siteBaseUrl') . $digitalObject->path . $digitalObject->name ?>
+        <dc:identifier linktype="fulltext"><?php echo esc_specialchars($resource['referenceCode']) ?></dc:identifier>
+        <dc:identifier linktype="fulltext"><?php echo esc_specialchars(sfConfig::get('app_siteBaseUrl') .'/'.$resource->slug) ?></dc:identifier>
+        <viewcopy linktype="fulltext"><?php echo esc_specialchars($digitalObjectUrl) ?></viewcopy>
+      <?php elseif ($digitalObject->usageId == QubitTerm::EXTERNAL_URI_ID): ?>
+        <dc:identifier linktype="restricted"><?php echo esc_specialchars($resource['referenceCode']) ?></dc:identifier>
+        <dc:identifier linktype="restricted"><?php echo esc_specialchars(sfConfig::get('app_siteBaseUrl') .'/'.$resource->slug) ?></dc:identifier>
+        <viewcopy linktype="restricted"><?php echo esc_specialchars($digitalObjectUrl) ?></viewcopy>
+      <?php endif; ?>
+      <?php $thumbnail = $digitalObject->getChildByUsageId(QubitTerm::THUMBNAIL_ID) ?>
+      <?php $thumbnailUrl = (string)QubitSetting::getByName('siteBaseUrl') . $thumbnail->path . $thumbnail->name ?>
+      <dc:identifier linktype="thumbnail"><?php echo esc_specialchars($thumbnailUrl) ?></dc:identifier>
+    <?php endforeach; ?>
   <?php endif; ?>
 
   <?php if (!empty($resource->locationOfOriginals)): ?>
